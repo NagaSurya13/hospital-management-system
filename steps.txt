@@ -75,3 +75,4 @@ with app.app_context():
     db.session.add(doc)
     db.session.commit()
 
+
