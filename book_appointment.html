@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">Book Appointment with {{ doctor.name }}</h3>
+<p class="text-muted">{{ doctor.specialization }} | {{ doctor.department.name }}</p>
+
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label">Date</label>
+    <input type="date" name="date" class="form-control"
+       min="{{ (datetime.utcnow().date()).isoformat() }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Time</label>
+    <input type="time" name="time" class="form-control"
+       required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Reason</label>
+    <textarea name="reason" class="form-control" rows="2"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Book</button>
+  <a href="{{ url_for('patient_dashboard') }}" class="btn btn-secondary">Back</a>
+</form>
+
+<h5 class="mt-4">Available Slots (Next 7 Days)</h5>
+<table class="table table-bordered table-sm">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Start</th>
+      <th>End</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for av in availabilities %}
+    <tr>
+      <td>{{ av.date }}</td>
+      <td>{{ av.start_time.strftime('%H:%M') }}</td>
+      <td>{{ av.end_time.strftime('%H:%M') }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3" class="text-center">No availability published</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

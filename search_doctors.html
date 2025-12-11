@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Search Doctors{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">Search Doctors</h3>
+
+<form method="POST" class="row g-3 mb-3">
+  <div class="col-md-8">
+    <input type="text" name="search_query" class="form-control"
+           placeholder="Search by name or specialization"
+           value="{{ search_query or '' }}">
+  </div>
+  <div class="col-md-4">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
+</form>
+
+{% if doctors is defined %}
+<table class="table table-striped table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Specialization</th>
+      <th>Department</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in doctors %}
+    <tr>
+      <td>{{ d.name }}</td>
+      <td>{{ d.specialization }}</td>
+      <td>{{ d.department.name }}</td>
+      <td><a href="{{ url_for('book_appointment', doctor_id=d.id) }}" class="btn btn-sm btn-primary">Book</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4" class="text-center">No doctors found</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+<a href="{{ url_for('patient_dashboard') }}" class="btn btn-secondary mt-2">Back</a>
+{% endblock %}

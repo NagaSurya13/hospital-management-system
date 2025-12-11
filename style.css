@@ -1,0 +1,3 @@
+body { background-color: #f7f9fb; }
+.card { box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.table-sm td, .table-sm th { padding: 0.3rem 0.4rem; }

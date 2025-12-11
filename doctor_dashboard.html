@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">Doctor Dashboard</h3>
+
+<div class="mb-3 d-flex justify-content-between">
+  <div>
+    <h5>{{ doctor.name }} ({{ doctor.specialization }})</h5>
+    <p class="text-muted mb-0">{{ doctor.department.name }}</p>
+  </div>
+  <a href="{{ url_for('doctor_availability') }}" class="btn btn-primary">Set Availability (Next 7 days)</a>
+</div>
+
+<h5>Upcoming Appointments (Next 7 Days)</h5>
+<table class="table table-striped table-sm">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Patient</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in upcoming_appointments %}
+    <tr>
+      <td>{{ a.id }}</td>
+      <td>{{ a.date }}</td>
+      <td>{{ a.time.strftime('%H:%M') }}</td>
+      <td>{{ a.patient.name }}</td>
+      <td>{{ a.status }}</td>
+      <td>
+        <a href="{{ url_for('update_treatment', appointment_id=a.id) }}" class="btn btn-sm btn-success">Update Treatment</a>
+        <a href="{{ url_for('mark_appointment', appointment_id=a.id, status='Completed') }}" class="btn btn-sm btn-outline-primary">Completed</a>
+        <a href="{{ url_for('mark_appointment', appointment_id=a.id, status='Cancelled') }}" class="btn btn-sm btn-outline-danger">Cancelled</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="text-center">No upcoming appointments</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h5 class="mt-4">Assigned Patients</h5>
+<table class="table table-bordered table-sm">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Phone</th>
+      <th>History</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in patients %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ p.name }}</td>
+      <td>{{ p.age }}</td>
+      <td>{{ p.phone }}</td>
+      <td>
+        <a href="{{ url_for('doctor_patient_history', patient_id=p.id) }}" class="btn btn-sm btn-outline-secondary">View History</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="text-center">No patients yet</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

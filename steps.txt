@@ -1,0 +1,67 @@
+python -m venv venv
+venv\Scripts\activate
+pip install flask flask-sqlalchemy
+python init_db.py
+python app.py
+
+
+
+first command for virtual environment creation
+second for activate 
+3rd for flask installation
+4th to run init_db py
+5th to run app.py
+
+
+
+
+to insert admin details into database manually if database is empty
+
+from app import app, db, Admin
+from werkzeug.security import generate_password_hash
+
+with app.app_context():
+    admin = Admin(
+        username='admin',
+        email='admin@gmail.com'
+    )
+    admin.password_hash = generate_password_hash('admin123')
+    db.session.add(admin)
+    db.session.commit()
+
+
+
+
+
+to insert department manually in database if not inserted
+
+
+from app import app, db, Department
+
+with app.app_context():
+    db.session.add(Department(name='Cardiology', description='Heart'))
+    db.session.add(Department(name='Neurology', description='Brain'))
+    db.session.add(Department(name='Orthopedics', description='Bones'))
+    db.session.commit()
+
+
+
+
+to insert doctors manually into database if doctors are not inserted through admin
+
+from app import app, db, Doctor
+from werkzeug.security import generate_password_hash
+
+with app.app_context():
+    doc = Doctor(
+        username='zsds',
+        email='sfdssf@gmail.com',
+        phone='8655887766',
+        name='zsds',
+        specialization='mbbs',
+        is_active=True
+    )
+    doc.password_hash = generate_password_hash('doc123')  # doctor password
+
+    db.session.add(doc)
+    db.session.commit()

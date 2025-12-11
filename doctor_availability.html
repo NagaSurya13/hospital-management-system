@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Doctor Availability{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">Set Availability (Next 7 Days)</h3>
+
+<form method="POST">
+  <table class="table table-bordered table-sm">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Available</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in days %}
+      {% set avail = availability_dict.get(d) %}
+      {% set date_str = d.strftime('%Y-%m-%d') %}
+      <tr>
+        <td>{{ d }}</td>
+        <td>
+          <input type="checkbox"
+                 name="available_{{ date_str }}"
+                 value="yes"
+                 {% if avail %}checked{% endif %}>
+        </td>
+        <td>
+          <input type="time"
+                 name="start_time_{{ date_str }}"
+                 value="{% if avail %}{{ avail.start_time.strftime('%H:%M') }}{% endif %}">
+        </td>
+        <td>
+          <input type="time"
+                 name="end_time_{{ date_str }}"
+                 value="{% if avail %}{{ avail.end_time.strftime('%H:%M') }}{% endif %}">
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+  <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-secondary">Back</a>
+</form>
+{% endblock %}
