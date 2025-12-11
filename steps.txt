@@ -1,12 +1,3 @@
-keep all the files into a folder called templates 
-
-keep style.css in another folder called static
-
-keep all the these files in a folder
-
-
-
-
 python -m venv venv
 venv\Scripts\activate
 pip install flask flask-sqlalchemy
@@ -74,5 +65,3 @@ with app.app_context():
 
     db.session.add(doc)
     db.session.commit()
-
-
